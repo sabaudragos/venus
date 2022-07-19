@@ -2,7 +2,10 @@ package com.vegaone.venus.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.vegaone.venus.domain.ProjectEntity;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -18,4 +21,5 @@ public class Company {
     private String email;
     private String vatNumber;
     private String administratorList;// TBD
+    private List<ProjectEntity> projects;
 }
