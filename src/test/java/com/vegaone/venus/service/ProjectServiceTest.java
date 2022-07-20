@@ -27,7 +27,6 @@ public class ProjectServiceTest {
     private static final String COUNTRY = "France";
     private static final String CITY = "Paris";
 
-
     @Autowired
     private CompanyService companyService;
 
@@ -130,7 +129,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    void shouldHaveMultipleProject() {
+    void shouldHaveMultipleProjects() {
         //given
         Company company = buildAndSaveCompany();
 
