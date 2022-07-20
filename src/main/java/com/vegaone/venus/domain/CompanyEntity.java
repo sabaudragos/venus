@@ -22,6 +22,7 @@ public class CompanyEntity {
     private String vatNumber;
     @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "company",
-            orphanRemoval = true)
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
     private List<ProjectEntity> projects;
 }

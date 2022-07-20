@@ -94,10 +94,52 @@ public class ProjectServiceTest {
         projectService.deleteProject(savedProject.getId());
 
         //then
-
         EntityNotFoundException thrown = Assertions.assertThrows(EntityNotFoundException.class,
                 () -> projectService.getProject(savedProject.getId()));
         Assertions.assertEquals("No project found with id=" + savedProject.getId(), thrown.getMessage());
+    }
+
+    @Test
+    void shouldHaveCompanyAssigned() {
+        //given
+        Company company = buildAndSaveCompany();
+
+        //when
+        Project project = buildAndSaveProject(company);
+
+        //then
+        Assertions.assertEquals(company.getId(), project.getCompany().getId());
+    }
+
+    @Test
+    void shouldDeleteProjectAndCompany() {
+        //given
+        Company company = buildAndSaveCompany();
+        Project project = buildAndSaveProject(company);
+
+        //when
+        companyRepo.deleteById(company.getId());
+
+        //then
+        EntityNotFoundException thrownProject = Assertions.assertThrows(EntityNotFoundException.class,
+                () -> projectService.getProject(project.getId()));
+        Assertions.assertEquals("No project found with id=" + project.getId(), thrownProject.getMessage());
+        EntityNotFoundException thrownCompany = Assertions.assertThrows(EntityNotFoundException.class,
+                () -> companyService.getCompany(company.getId()));
+        Assertions.assertEquals("No company found with id=" + company.getId(), thrownCompany.getMessage());
+    }
+
+    @Test
+    void shouldHaveMultipleProject() {
+        //given
+        Company company = buildAndSaveCompany();
+
+        //when
+        Project project = buildAndSaveProject(company);
+        Project secondProject = buildAndSaveProject(company);
+
+        //then
+        Assertions.assertEquals(2, projectService.getAllProjectsForCompanyId(company.getId()).size());
     }
 
     private Project buildAndSaveProject(Company company) {
