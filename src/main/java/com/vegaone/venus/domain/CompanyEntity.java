@@ -3,10 +3,11 @@ package com.vegaone.venus.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
-@Entity
 @Table(name = "company")
+@Entity
 public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +20,9 @@ public class CompanyEntity {
     private String registrationNumber;
     private String email;
     private String vatNumber;
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "company",
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private List<ProjectEntity> projects;
 }
