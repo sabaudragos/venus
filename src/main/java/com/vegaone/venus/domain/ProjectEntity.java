@@ -19,5 +19,7 @@ public class ProjectEntity {
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private CompanyEntity company;
+    @OneToOne(mappedBy = "project")
+    private UserEntity user;
 
 }

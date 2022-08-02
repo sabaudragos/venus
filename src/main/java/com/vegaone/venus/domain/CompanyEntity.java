@@ -25,4 +25,6 @@ public class CompanyEntity {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private List<ProjectEntity> projects;
+    @OneToOne(mappedBy = "company")
+    private UserEntity user;
 }
