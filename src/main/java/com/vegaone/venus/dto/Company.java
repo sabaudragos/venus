@@ -24,5 +24,5 @@ public class Company {
     @JsonIgnore
     private List<Project> projects;
     @JsonIgnore
-    private User user;
+    private List<User> users;
 }

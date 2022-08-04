@@ -3,6 +3,7 @@ package com.vegaone.venus.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Table(name = "users")
@@ -13,10 +14,10 @@ public class UserEntity {
     private Long id;
     private String firstName;
     private String lastName;
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id")
-    private ProjectEntity project;
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    private List<ProjectEntity> project;
+    private String email;
 }

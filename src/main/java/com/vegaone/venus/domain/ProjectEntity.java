@@ -1,9 +1,9 @@
 package com.vegaone.venus.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,9 +17,11 @@ public class ProjectEntity {
     private String description;
     @ManyToOne
     @JoinColumn(name = "company_id")
-    @JsonIgnore
     private CompanyEntity company;
-    @OneToOne(mappedBy = "project")
-    private UserEntity user;
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_project",
+            joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private List<UserEntity> users;
 
 }

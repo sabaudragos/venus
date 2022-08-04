@@ -1,8 +1,11 @@
 package com.vegaone.venus.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -12,5 +15,7 @@ public class User {
     private String firstName;
     private String lastName;
     private Company company;
-    private Project project;
+    @JsonIgnore
+    private List<Project> project;
+    private String email;
 }

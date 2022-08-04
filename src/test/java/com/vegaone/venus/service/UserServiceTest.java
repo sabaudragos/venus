@@ -13,12 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @SpringBootTest
 public class UserServiceTest {
 
     private static final String FIRST_NAME = "John";
     private static final String NEW_FIRST_NAME = "Marty";
+    private static final String USER_EMAIL = "test@emailtest.com";
+    private static final String SECOND_USER_EMAIL = "test@emailtest2.com";
     private static final String LAT_NAME = "Smith";
     private static final String PROJECT_NAME = "Dummy project";
     private static final String NEW_PROJECT_NAME = "New dummy project";
@@ -60,7 +66,7 @@ public class UserServiceTest {
     @Test
     void createUser() {
         //given
-        User user = buildUser();
+        User user = buildUser(USER_EMAIL);
 
         //when
         User savedUser = userService.createUser(user);
@@ -74,7 +80,7 @@ public class UserServiceTest {
     @Test
     void shouldGetUser() {
         //given
-        User savedUser = buildAndSaveUser(null, null);
+        User savedUser = buildAndSaveUser(null, null, USER_EMAIL);
 
         //when
         User fetchedUser = userService.getUser(savedUser.getId());
@@ -87,7 +93,7 @@ public class UserServiceTest {
     @Test
     void shouldUpdateUser() {
         //given
-        User savedUser = buildAndSaveUser(null, null);
+        User savedUser = buildAndSaveUser(null, null, USER_EMAIL);
         savedUser.setFirstName(NEW_FIRST_NAME);
 
         //when
@@ -100,7 +106,7 @@ public class UserServiceTest {
     @Test
     void shouldDeleteUser() {
         //given
-        User savedUsed = buildAndSaveUser(null, null);
+        User savedUsed = buildAndSaveUser(null, null, USER_EMAIL);
 
         //when
         userService.deleteUser(savedUsed.getId());
@@ -117,7 +123,8 @@ public class UserServiceTest {
         Company company = buildAndSaveCompany();
 
         //when
-        User user = buildAndSaveUser(company, null);
+        User user = buildAndSaveUser(company, null, USER_EMAIL);
+        User secondUser = buildAndSaveUser(company, null, SECOND_USER_EMAIL);
 
         //then
         Assertions.assertEquals(company, user.getCompany());
@@ -130,11 +137,13 @@ public class UserServiceTest {
         Project project = buildAndSaveProject(company);
 
         //then
-        User user = buildAndSaveUser(company, project);
+        User user = buildAndSaveUser(company, null, USER_EMAIL);
+        project.setUsers(Collections.singletonList(user));
+        projectService.updateProject(project);
 
         //then
         Assertions.assertEquals(company, user.getCompany());
-        Assertions.assertEquals(project, user.getProject());
+        Assertions.assertEquals(1, userService.findAllByProjectId(project.getId()).size());
 
     }
 
@@ -144,8 +153,8 @@ public class UserServiceTest {
         Company company = buildAndSaveCompany();
 
         //when
-        User firstUser = buildAndSaveUser(company, null);
-        User secondUser = buildAndSaveUser(company, null);
+        User firstUser = buildAndSaveUser(company, null, USER_EMAIL);
+        User secondUser = buildAndSaveUser(company, null, SECOND_USER_EMAIL);
 
         //then
         Assertions.assertEquals(2, userService.findAllByCompanyId(company.getId()).size());
@@ -158,34 +167,58 @@ public class UserServiceTest {
         Project firstProject = buildAndSaveProject(company);
 
         //when
-        User firstUser = buildAndSaveUser(company, firstProject);
-        User secondUsed = buildAndSaveUser(company, firstProject);
+        User firstUser = buildAndSaveUser(company, null, USER_EMAIL);
+        User secondUsed = buildAndSaveUser(company, null, SECOND_USER_EMAIL);
+        List<User> userList = Arrays.asList(firstUser, secondUsed);
+        firstProject.setUsers(userList);
+        projectService.updateProject(firstProject);
 
         //then
         Assertions.assertEquals(2, userService.findAllByProjectId(firstProject.getId()).size());
-        Assertions.assertEquals(2, userService.findAllByCompanyIdAndProjectId(company.getId(), firstProject.getId()).size());
+    }
+
+    @Test
+    void shouldHaveUserAssignedToDifferentProjects() {
+        //given
+        Company company = buildAndSaveCompany();
+        Project firstProject = buildAndSaveProject(company);
+        Project secondProject = buildAndSaveProject(company);
+
+        //when
+        User firstUser = buildAndSaveUser(company, null, USER_EMAIL);
+        firstProject.setUsers(Collections.singletonList(firstUser));
+        firstProject = projectService.updateProject(firstProject);
+        secondProject.setUsers(Collections.singletonList(firstUser));
+        secondProject = projectService.updateProject(secondProject);
+
+        //then
+        Assertions.assertEquals(1, userService.findAllByProjectId(firstProject.getId()).size());
+        Assertions.assertEquals(1, userService.findAllByProjectId(secondProject.getId()).size());
     }
 
 
-    private User buildAndSaveUser(Company company, Project project) {
-        User user = buildUser();
+    private User buildAndSaveUser(Company company, Project project, String email) {
+        User user = buildUser(email);
 
         if (company != null) {
             user.setCompany(company);
         }
         if (project != null) {
-            user.setProject(project);
+            user.setProject(Collections.singletonList(project));
+        } else {
+            user.setProject(new ArrayList<>());
         }
 
         return userService.createUser(user);
 
     }
 
-    private User buildUser() {
+    private User buildUser(String email) {
         User user = new User();
 
         user.setFirstName(FIRST_NAME);
         user.setLastName(LAT_NAME);
+        user.setEmail(email);
 
         return user;
     }
