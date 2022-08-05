@@ -22,16 +22,9 @@ public class CompanyEntity {
     private String registrationNumber;
     private String email;
     private String vatNumber;
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "company",
-            orphanRemoval = true,
-            fetch = FetchType.LAZY)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "company", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ProjectEntity> projects;
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "company",
-            orphanRemoval = true,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "company", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<UserEntity> users;
 }
