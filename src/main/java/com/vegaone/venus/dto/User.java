@@ -10,19 +10,12 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Company {
+public class User {
     private Long id;
-    private String name;
-    private String address;
-    private String city;
-    private String country;
-    private String phone;
-    private String registrationNumber;
+    private String firstName;
+    private String lastName;
+    private Company company;
+    @JsonIgnore
+    private List<Project> project;
     private String email;
-    private String vatNumber;
-    private String administratorList;// TBD
-    @JsonIgnore
-    private List<Project> projects;
-    @JsonIgnore
-    private List<User> users;
 }

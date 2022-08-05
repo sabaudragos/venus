@@ -1,6 +1,8 @@
 package com.vegaone.venus.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,6 +25,13 @@ public class CompanyEntity {
     @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "company",
             orphanRemoval = true,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<ProjectEntity> projects;
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "company",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<UserEntity> users;
 }

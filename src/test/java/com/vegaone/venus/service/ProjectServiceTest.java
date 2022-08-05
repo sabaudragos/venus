@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 
 @SpringBootTest
 public class ProjectServiceTest {
@@ -155,6 +156,7 @@ public class ProjectServiceTest {
 
         project.setName(PROJECT_NAME);
         project.setDescription(PROJECT_DESCRIPTION);
+        project.setUsers(new ArrayList<>());
 
         return project;
     }

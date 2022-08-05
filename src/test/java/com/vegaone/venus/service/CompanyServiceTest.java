@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -125,6 +126,8 @@ class CompanyServiceTest {
         company.setAddress(ADDRESS);
         company.setCity(CITY);
         company.setCountry(COUNTRY);
+        company.setProjects(new ArrayList<>());
+        company.setUsers(new ArrayList<>());
 
         return company;
     }
