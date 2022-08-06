@@ -18,7 +18,7 @@ public class ProjectEntity {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "user_project",
             joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))

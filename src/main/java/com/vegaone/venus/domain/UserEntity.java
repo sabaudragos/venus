@@ -1,6 +1,8 @@
 package com.vegaone.venus.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +18,7 @@ public class UserEntity {
     private String lastName;
     @ManyToOne
     @JoinColumn(name = "company_id")
+    @Fetch(FetchMode.SELECT)
     private CompanyEntity company;
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<ProjectEntity> project;
