@@ -15,16 +15,26 @@ public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String address;
+
     private String city;
+
     private String country;
+
     private String phone;
+
     private String registrationNumber;
+
     private String email;
+
     private String vatNumber;
+
     @OneToMany(mappedBy = "company", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ProjectEntity> projects = new ArrayList<>();
+
     @OneToMany(mappedBy = "company", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<UserEntity> users = new ArrayList<>();
