@@ -14,13 +14,21 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String firstName;
+
     private String lastName;
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     @Fetch(FetchMode.SELECT)
     private CompanyEntity company;
+
     @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
     private List<ProjectEntity> project;
+
+    @OneToMany(mappedBy = "user")
+    private List<FeatureEntity> features;
+
     private String email;
 }
