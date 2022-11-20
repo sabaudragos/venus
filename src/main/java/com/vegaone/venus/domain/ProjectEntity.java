@@ -26,6 +26,9 @@ public class ProjectEntity {
     @OneToMany(mappedBy = "project", orphanRemoval = true)
     private List<FeatureEntity> features = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project", orphanRemoval = true)
+    private List<FeatureEntity> tags = new ArrayList<>();
+
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "user_project",
             joinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"),
