@@ -13,4 +13,5 @@ public class Feature {
     private String description;
     private Project project;
     private User user;
+    private Status status;
 }

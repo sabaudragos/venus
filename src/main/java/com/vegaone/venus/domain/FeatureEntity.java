@@ -22,6 +22,10 @@ public class FeatureEntity {
     private ProjectEntity project;
 
     @ManyToOne
+    @JoinColumn(name = "status_id")
+    private StatusEntity status;
+
+    @ManyToOne
     @JoinColumn(name="user_id")
     private UserEntity user;
 
